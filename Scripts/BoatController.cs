@@ -1,13 +1,42 @@
-﻿using UnityEngine;
+﻿// =================================================================================================
+//
+// Super Boat Rush Main Game Play Scripts.
+// Copyright (c) 2014 Aldo Leka
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+// =================================================================================================
+
+using UnityEngine;
 using System.Collections;
 
 /// <summary>
 /// BoatController script is the core script of the game since it get the input of the player
 /// and manipulates the boat accordingly using wheel colliders, torque force, break, spinning (by changing
 /// the friction of the wheels) etc.
+/// The boat mechanics here work the same way as a normal car mechanics, via 4 wheels attached to a main
+/// box collider (or more complex collider system). 
+/// If you want to use this script, you have to create a game object and put 4 child game objects with wheel collider 
+/// (change naming of the wheels appropriately at the vars below) and a collider to attach the wheels to (for correct physics).
 /// Use W to activate / deactivate engine.
 /// Use E to activate / deactivate turbo.
-/// Use Arrows / WASD to control the boat.
+/// Use Arrows / WASD to control the boat (steering + reverse movement).
 /// Use Space to break the boat.
 /// </summary>
 public class BoatController : MonoBehaviour {
@@ -27,6 +56,10 @@ public class BoatController : MonoBehaviour {
 	public float MaxBreakTorque = 100;
 	public float MaxReverseSpeed = -50;
 	public Vector3 CenterOfMass = new Vector3(0, -2.2f, 0.25f);
+	public string FrontLeftWheel = "wheelFL";
+	public string FrontRightWheel = "wheelFR";
+	public string RearLeftWheel = "wheelRL";
+	public string RearRightWheel = "wheelRR";
 
 	// reference to all 4 wheel colliders of the Boat GameObject.
 	private WheelCollider m_WheelFL;
@@ -97,10 +130,10 @@ public class BoatController : MonoBehaviour {
 	/// Used to grab the Wheel Collider component of each wheel GameObject parented by this Boat GameObject.
 	/// </summary>
 	private void GetWheelColliders () {
-		m_WheelFL = transform.Find("wheelFL").collider as WheelCollider;
-		m_WheelFR = transform.Find("wheelFR").collider as WheelCollider;
-		m_WheelRL = transform.Find("wheelRL").collider as WheelCollider;
-		m_WheelRR = transform.Find("wheelRR").collider as WheelCollider;
+		m_WheelFL = transform.Find(FrontLeftWheel).collider as WheelCollider;
+		m_WheelFR = transform.Find(FrontRightWheel).collider as WheelCollider;
+		m_WheelRL = transform.Find(RearLeftWheel).collider as WheelCollider;
+		m_WheelRR = transform.Find(RearRightWheel).collider as WheelCollider;
 	}
 	
 	/// <summary>
